@@ -4,7 +4,7 @@ export default class Conv extends Component {
   render() {
     return (
       <div>
-        <p>Converter</p>
+        <h2>Converter</h2>
       </div>
     );
   }
