@@ -1,12 +1,14 @@
 import React, { Component } from "react";
 import Nav from "../Nav/Nav";
+import "./Footer.css";
+
 export default class Footer extends Component {
   render() {
     return (
-      <div>
+      <footer className="Footer">
         <p>Footer</p>
         <Nav />
-      </div>
+      </footer>
     );
   }
 }
