@@ -5,13 +5,12 @@ export default class Main extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      allRate: {},
+      isLoading: true,
       date: "",
       curensyRate: {},
     };
     this.getRate();
     this.currensy = ["USD", "EUR", "RUB", "UAH"];
-    // this.showRate();
   }
 
   getRate = () => {
@@ -21,11 +20,19 @@ export default class Main extends Component {
       })
       .then((data) => {
         console.log(data);
-        let date = data[0].Date.substr(0, 10);
+        this.setState({ isLoading: false });
+        let date = new Date(data[0].Date);
+        date = this.dateFormat(date);
         this.setState({ date: date });
+
         let allRate = {};
         Object.keys(data).map((item, index) => {
-          allRate[data[index].Cur_Abbreviation] = data[index].Cur_OfficialRate;
+          allRate[data[index].Cur_Abbreviation] = [
+            data[index].Cur_Scale,
+            data[index].Cur_Name,
+            data[index].Cur_OfficialRate,
+            `./flag/${data[index].Cur_Abbreviation}.png`,
+          ];
         });
 
         let result = {};
@@ -38,18 +45,56 @@ export default class Main extends Component {
       });
   };
 
+  dateFormat = (date) => {
+    let options = {
+      weekday: "long",
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    };
+    let dateTimeFormat = new Intl.DateTimeFormat("ru-RU", options);
+    return dateTimeFormat.format(date);
+  };
+
   render() {
-    return (
-      <div className="heigth">
-        <h2>Курсы валют на </h2>
-        <p>{this.state.date}</p>
-        <ul className="justify-content-left">
+    let container;
+    if (this.state.isLoading) {
+      container = (
+        <div>
+          <div
+            className="spinner-border text-secondary load"
+            style={{ width: "6rem", height: "6rem" }}
+            role="status"
+          >
+            <span className="sr-only">Loading...</span>
+          </div>
+          Loading...
+        </div>
+      );
+    } else {
+      container = (
+        <ul className="list-unstyled">
           {Object.keys(this.state.curensyRate).map((elem, index) => (
-            <li className="nav-item" key={index}>
-              {elem + " : " + this.state.curensyRate[elem].toFixed(2)}
+            <li className="media-body" key={index}>
+              <img
+                src={this.state.curensyRate[elem][3]}
+                className="mr-3"
+                width="20"
+                height="17"
+                alt={[elem]}
+              />
+              {this.state.curensyRate[elem][0] + " " + [elem] + "  "}
+              {"   :    " + this.state.curensyRate[elem][2].toFixed(2) + " BYN"}
             </li>
           ))}
         </ul>
+      );
+    }
+    return (
+      <div className="Rate">
+        <p>Курсы валют НБ РБ на </p>
+        <p className="Date">{this.state.date}</p>
+        <div>{container}</div>
       </div>
     );
   }

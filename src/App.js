@@ -6,15 +6,18 @@ import Conv from "./Conv/Conv";
 import Footer from "./Footer/Footer";
 
 class App extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+
   render() {
     return (
       <div className="App container">
         <Header />
-        <h1>Helloo! </h1>
         <div className=" d-flex justify-content-around ">
           <Main />
-          <Conv />
         </div>
+        <Conv />
         <Footer />
       </div>
     );
