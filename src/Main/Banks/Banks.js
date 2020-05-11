@@ -1,8 +1,7 @@
 import React, { Component } from "react";
-import "./Main.css";
-import Banks from "./Banks/Banks";
+import "./Banks.css";
 
-export default class Main extends Component {
+export default class Banks extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -15,12 +14,12 @@ export default class Main extends Component {
   }
 
   getRate = () => {
-    fetch("https://www.nbrb.by/api/exrates/rates?periodicity=0")
+    fetch("https://belarusbank.by/api/kurs_cards")
       .then((response) => {
         return response.json();
       })
       .then((data) => {
-        console.log(data);
+        console.log("blrbank:  " + data);
         this.setState({ isLoading: false });
         let date = new Date(data[0].Date);
         date = this.dateFormat(date);
@@ -93,12 +92,9 @@ export default class Main extends Component {
     }
     return (
       <div className="Rate">
-        <p>Курсы валют НБ РБ на </p>
+        <p>Курсы валют Беларусбанк на </p>
         <p className="Date">{this.state.date}</p>
         <div>{container}</div>
-        <div>
-          <Banks />
-        </div>
       </div>
     );
   }
