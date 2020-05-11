@@ -1,11 +1,21 @@
-.heigth {
-  height: 500px;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: 30px;
+.Rate {
+  font-size: 20px;
 }
 
+lu {
+  align-items: left;
+  justify-content: left;
+}
 li {
+  font-size: 20px;
   list-style-type: none;
+  text-align: left;
+}
+
+.Date {
+  margin-top: -0.8em; /* Отступ сверху */
+}
+
+.load {
+  margin-top: 2em;
 }
