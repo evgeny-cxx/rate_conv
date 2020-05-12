@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import "./Banks.css";
+import "./Belarusbank.css";
 
 export default class Banks extends Component {
   constructor(props) {
@@ -9,44 +9,11 @@ export default class Banks extends Component {
       date: "",
       curensyRate: {},
     };
-    // this.getRate();
-    this.getRateAgro();
+    this.getRate();
     this.currensy = ["USD", "EUR", "RUB"];
   }
 
-  getRateAgro = () => {
-    fetch(
-      "https://cors-anywhere.herokuapp.com/" +
-        "https://belapb.by/ExCardsDaily.php"
-    )
-      .then((response) => {
-        return response.json();
-      })
-      .then((data) => {
-        // data = data[0];
-        console.table("blrbank:  ", data);
-        // this.setState({ isLoading: false });
-
-        // let date = new Date(data.kurs_date_time);
-        // date = this.dateFormat(date);
-        // this.setState({ date: date });
-
-        // let allRate = {};
-        // Object.keys(this.currensy).map((item, index) => {
-        //   let sale = `data.${this.currensy[item]}CARD_out`;
-        //   let purchase = `data.${this.currensy[item]}CARD_in`;
-        //   allRate[this.currensy[item]] = [
-        //     +eval(purchase),
-        //     +eval(sale),
-        //     `./flag/${this.currensy[item]}.png`,
-        //   ];
-        // });
-        // console.log(allRate);
-        // this.setState({ curensyRate: allRate });
-      });
-  };
-
-  getRateBlr = () => {
+  getRate = () => {
     fetch(
       "https://cors-anywhere.herokuapp.com/" +
         "https://belarusbank.by/api/kurs_cards"
@@ -125,8 +92,8 @@ export default class Banks extends Component {
                 />
                 {[elem]} :
               </td>
-              <td>{this.state.curensyRate[elem][0].toFixed(2)} BYN.</td>
-              <td>{this.state.curensyRate[elem][1].toFixed(2)} BYN.</td>
+              <td>{this.state.curensyRate[elem][0].toFixed(2)} BYN. </td>
+              <td>{this.state.curensyRate[elem][1].toFixed(2)} BYN. </td>
             </tr>
           ))}
         </table>

@@ -1,6 +1,5 @@
 import React, { Component } from "react";
-import "./Main.css";
-import Banks from "./Banks/Banks";
+import "./NacBank.css";
 
 export default class Main extends Component {
   constructor(props) {
@@ -92,15 +91,10 @@ export default class Main extends Component {
       );
     }
     return (
-      <div className="Rate d-flex justify-content-around">
-        <div>
-          <p>Курсы валют НБ РБ на </p>
-          <p className="Date">{this.state.date}</p>
-          {container}
-        </div>
-        <div>
-          <Banks />
-        </div>
+      <div className="Rate">
+        <p>Курсы валют НБ РБ на </p>
+        <p className="Date">{this.state.date}</p>
+        {container}
       </div>
     );
   }
