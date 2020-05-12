@@ -14,35 +14,50 @@ export default class Banks extends Component {
   }
 
   getRate = () => {
-    fetch("https://belarusbank.by/api/kurs_cards")
-      .then((response) => {
-        return response.json();
-      })
-      .then((data) => {
-        console.log("blrbank:  " + data);
-        this.setState({ isLoading: false });
-        let date = new Date(data[0].Date);
-        date = this.dateFormat(date);
-        this.setState({ date: date });
+    const xhr = new XMLHttpRequest();
+    const url = "https://belarusbank.by/api/kurs_cards";
 
-        let allRate = {};
-        Object.keys(data).map((item, index) => {
-          allRate[data[index].Cur_Abbreviation] = [
-            data[index].Cur_Scale,
-            data[index].Cur_Name,
-            data[index].Cur_OfficialRate,
-            `./flag/${data[index].Cur_Abbreviation}.png`,
-          ];
-        });
+    xhr.open("GET", url);
+    // xhr.onreadystatechange = someHandler;
+    xhr.send();
+    console.log(xhr);
 
-        let result = {};
-        for (let item in this.currensy) {
-          console.log(this.currensy[item]);
-          result[this.currensy[item]] = allRate[this.currensy[item]];
-        }
-        console.log(result);
-        this.setState({ curensyRate: result });
-      });
+    // fetch(
+    //   "https://cors-anywhere.herokuapp.com/" +
+    //     "https://belarusbank.by/api/kurs_cards"
+    // )
+    //   .then((response) => {
+    //     return response.json();
+    //   })
+    //   .then((data) => {
+    //     data = eval(data);
+    //     data = JSON.stringify(data, null, 2);
+
+    //     console.table("blrbank:  " + data);
+    //     console.table("blrbank:  " + data[(0, 89)]);
+    //     this.setState({ isLoading: false });
+    // let date = new Date(data[0].Date);
+    // date = this.dateFormat(date);
+    // this.setState({ date: date });
+
+    // let allRate = {};
+    // Object.keys(data).map((item, index) => {
+    //   allRate[data[index].Cur_Abbreviation] = [
+    //     data[index].Cur_Scale,
+    //     data[index].Cur_Name,
+    //     data[index].Cur_OfficialRate,
+    //     `./flag/${data[index].Cur_Abbreviation}.png`,
+    //   ];
+    // });
+
+    // let result = {};
+    // for (let item in this.currensy) {
+    //   console.log(this.currensy[item]);
+    //   result[this.currensy[item]] = allRate[this.currensy[item]];
+    // }
+    // console.log(result);
+    // this.setState({ curensyRate: result });
+    // });
   };
 
   dateFormat = (date) => {
