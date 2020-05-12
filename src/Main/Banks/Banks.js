@@ -9,55 +9,73 @@ export default class Banks extends Component {
       date: "",
       curensyRate: {},
     };
-    this.getRate();
-    this.currensy = ["USD", "EUR", "RUB", "UAH"];
+    // this.getRate();
+    this.getRateAgro();
+    this.currensy = ["USD", "EUR", "RUB"];
   }
 
-  getRate = () => {
-    const xhr = new XMLHttpRequest();
-    const url = "https://belarusbank.by/api/kurs_cards";
+  getRateAgro = () => {
+    fetch(
+      "https://cors-anywhere.herokuapp.com/" +
+        "https://belapb.by/ExCardsDaily.php"
+    )
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        // data = data[0];
+        console.table("blrbank:  ", data);
+        // this.setState({ isLoading: false });
 
-    xhr.open("GET", url);
-    // xhr.onreadystatechange = someHandler;
-    xhr.send();
-    console.log(xhr);
+        // let date = new Date(data.kurs_date_time);
+        // date = this.dateFormat(date);
+        // this.setState({ date: date });
 
-    // fetch(
-    //   "https://cors-anywhere.herokuapp.com/" +
-    //     "https://belarusbank.by/api/kurs_cards"
-    // )
-    //   .then((response) => {
-    //     return response.json();
-    //   })
-    //   .then((data) => {
-    //     data = eval(data);
-    //     data = JSON.stringify(data, null, 2);
+        // let allRate = {};
+        // Object.keys(this.currensy).map((item, index) => {
+        //   let sale = `data.${this.currensy[item]}CARD_out`;
+        //   let purchase = `data.${this.currensy[item]}CARD_in`;
+        //   allRate[this.currensy[item]] = [
+        //     +eval(purchase),
+        //     +eval(sale),
+        //     `./flag/${this.currensy[item]}.png`,
+        //   ];
+        // });
+        // console.log(allRate);
+        // this.setState({ curensyRate: allRate });
+      });
+  };
 
-    //     console.table("blrbank:  " + data);
-    //     console.table("blrbank:  " + data[(0, 89)]);
-    //     this.setState({ isLoading: false });
-    // let date = new Date(data[0].Date);
-    // date = this.dateFormat(date);
-    // this.setState({ date: date });
+  getRateBlr = () => {
+    fetch(
+      "https://cors-anywhere.herokuapp.com/" +
+        "https://belarusbank.by/api/kurs_cards"
+    )
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        data = data[0];
+        console.table("blrbank:  ", data);
+        this.setState({ isLoading: false });
 
-    // let allRate = {};
-    // Object.keys(data).map((item, index) => {
-    //   allRate[data[index].Cur_Abbreviation] = [
-    //     data[index].Cur_Scale,
-    //     data[index].Cur_Name,
-    //     data[index].Cur_OfficialRate,
-    //     `./flag/${data[index].Cur_Abbreviation}.png`,
-    //   ];
-    // });
+        let date = new Date(data.kurs_date_time);
+        date = this.dateFormat(date);
+        this.setState({ date: date });
 
-    // let result = {};
-    // for (let item in this.currensy) {
-    //   console.log(this.currensy[item]);
-    //   result[this.currensy[item]] = allRate[this.currensy[item]];
-    // }
-    // console.log(result);
-    // this.setState({ curensyRate: result });
-    // });
+        let allRate = {};
+        Object.keys(this.currensy).map((item, index) => {
+          let sale = `data.${this.currensy[item]}CARD_out`;
+          let purchase = `data.${this.currensy[item]}CARD_in`;
+          allRate[this.currensy[item]] = [
+            +eval(purchase),
+            +eval(sale),
+            `./flag/${this.currensy[item]}.png`,
+          ];
+        });
+        console.log(allRate);
+        this.setState({ curensyRate: allRate });
+      });
   };
 
   dateFormat = (date) => {
@@ -88,21 +106,30 @@ export default class Banks extends Component {
       );
     } else {
       container = (
-        <ul className="list-unstyled">
+        <table className="list-unstyled">
+          <tr>
+            <td>Валюта</td>
+            <td>Продажа</td>
+            <td>Покупка</td>
+          </tr>
+
           {Object.keys(this.state.curensyRate).map((elem, index) => (
-            <li className="media-body" key={index}>
-              <img
-                src={this.state.curensyRate[elem][3]}
-                className="mr-3"
-                width="20"
-                height="16"
-                alt={[elem]}
-              />
-              {this.state.curensyRate[elem][0] + " " + [elem] + "  "}
-              {"   :    " + this.state.curensyRate[elem][2].toFixed(2) + " BYN"}
-            </li>
+            <tr>
+              <td className="media-body" key={index}>
+                <img
+                  src={this.state.curensyRate[elem][2]}
+                  className="mr-3"
+                  width="20"
+                  height="16"
+                  alt={[elem]}
+                />
+                {[elem]} :
+              </td>
+              <td>{this.state.curensyRate[elem][0].toFixed(2)} BYN.</td>
+              <td>{this.state.curensyRate[elem][1].toFixed(2)} BYN.</td>
+            </tr>
           ))}
-        </ul>
+        </table>
       );
     }
     return (

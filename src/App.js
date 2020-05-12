@@ -14,7 +14,7 @@ class App extends React.Component {
     return (
       <div className="App container">
         <Header />
-        <div className=" d-flex justify-content-around ">
+        <div className=" justify-content-start ">
           <Main />
         </div>
         <Conv />
