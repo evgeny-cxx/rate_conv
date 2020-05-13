@@ -10,7 +10,7 @@ export default class Main extends Component {
       curensyRate: {},
     };
     this.getRate();
-    this.currensy = ["USD", "EUR", "RUB", "UAH"];
+    this.currensy = ["USD", "EUR", "RUB"];
   }
 
   getRate = () => {
@@ -29,8 +29,8 @@ export default class Main extends Component {
         Object.keys(data).map((item, index) => {
           allRate[data[index].Cur_Abbreviation] = [
             data[index].Cur_Scale,
-            data[index].Cur_Name,
             data[index].Cur_OfficialRate,
+            data[index].Cur_Name,
             `./flag/${data[index].Cur_Abbreviation}.png`,
           ];
           return null;
@@ -85,7 +85,7 @@ export default class Main extends Component {
                 alt={[elem]}
               />
               {this.state.curensyRate[elem][0] + " " + [elem] + "   :    "}
-              <strong>{this.state.curensyRate[elem][2].toFixed(2)}</strong>
+              <strong>{this.state.curensyRate[elem][1].toFixed(2)}</strong>
               {"  "}BYN
             </li>
           ))}
