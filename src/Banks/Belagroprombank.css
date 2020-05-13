@@ -2,7 +2,7 @@
   font-size: 20px;
 }
 table {
-  border: 1px solid gray;
+  /* border: 1px solid gray; */
 }
 tr {
   align-items: left;
@@ -11,7 +11,7 @@ tr {
 td th {
   font-size: 20px;
   list-style-type: none;
-  text-align: left;
+  /* text-align: left; */
 }
 
 .Date {

@@ -33,6 +33,7 @@ export default class Main extends Component {
             data[index].Cur_OfficialRate,
             `./flag/${data[index].Cur_Abbreviation}.png`,
           ];
+          return null;
         });
 
         let result = {};
@@ -83,8 +84,9 @@ export default class Main extends Component {
                 height="16"
                 alt={[elem]}
               />
-              {this.state.curensyRate[elem][0] + " " + [elem] + "  "}
-              {"   :    " + this.state.curensyRate[elem][2].toFixed(2) + " BYN"}
+              {this.state.curensyRate[elem][0] + " " + [elem] + "   :    "}
+              <strong>{this.state.curensyRate[elem][2].toFixed(2)}</strong>
+              {"  "}BYN
             </li>
           ))}
         </ul>

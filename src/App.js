@@ -6,6 +6,7 @@ import Footer from "./Footer/Footer";
 import Belarusbank from "./Banks/Belarusbank";
 import Belagroprombank from "./Banks/Belagroprombank";
 import NacBank from "./Banks/NacBank";
+import Alfabank from "./Banks/Alfabank";
 
 class App extends React.Component {
   constructor(props) {
@@ -27,13 +28,43 @@ class App extends React.Component {
   render() {
     let component;
     if (this.state.select === "Национальный банк") {
-      component = <NacBank />;
+      component = (
+        <div className="d-flex justify-content-center">
+          <NacBank />
+        </div>
+      );
     }
     if (this.state.select === "Беларусбанк") {
-      component = <Belarusbank />;
+      component = (
+        <div className="d-flex justify-content-center">
+          {" "}
+          <Belarusbank />
+        </div>
+      );
     }
-    if (this.state.select === "БелАгропромбанк") {
-      component = <Belagroprombank />;
+    if (this.state.select === "Белагропромбанк") {
+      component = (
+        <div className="d-flex justify-content-center">
+          <Belagroprombank />
+        </div>
+      );
+    }
+    if (this.state.select === "Альфабанк") {
+      component = (
+        <div className="d-flex justify-content-center">
+          <Alfabank />
+        </div>
+      );
+    }
+    if (this.state.select === "Все банки") {
+      component = (
+        <div className="d-flex justify-content-between">
+          <NacBank />
+          <Belarusbank />
+          <Belagroprombank />
+          <Alfabank />
+        </div>
+      );
     }
 
     return (
@@ -47,10 +78,12 @@ class App extends React.Component {
           >
             <option defaultValue="0">Национальный банк</option>
             <option defaultValue="1">Беларусбанк</option>
-            <option defaultValue="2">БелАгропромбанк</option>
+            <option defaultValue="2">Белагропромбанк</option>
+            <option defaultValue="3">Альфабанк</option>
+            <option defaultValue="4">Все банки</option>
           </select>
         </form>
-        <div className="d-flex justify-content-center">{component}</div>
+        {component}
         <Conv />
         <Footer />
       </div>
