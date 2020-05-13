@@ -39,6 +39,7 @@ export default class Banks extends Component {
             +eval(sale),
             `./flag/${this.currensy[item]}.png`,
           ];
+          return null;
         });
         console.log(allRate);
         this.setState({ curensyRate: allRate });
@@ -92,8 +93,14 @@ export default class Banks extends Component {
                 />
                 {[elem]} :
               </td>
-              <td>{this.state.curensyRate[elem][0].toFixed(2)} BYN. </td>
-              <td>{this.state.curensyRate[elem][1].toFixed(2)} BYN. </td>
+              <td>
+                <strong>{this.state.curensyRate[elem][0].toFixed(2)}</strong>{" "}
+                BYN
+              </td>
+              <td>
+                <strong>{this.state.curensyRate[elem][1].toFixed(2)}</strong>{" "}
+                BYN
+              </td>
             </tr>
           ))}
         </table>
