@@ -13,8 +13,12 @@ class App extends React.Component {
     super(props);
     this.state = {
       select: "Национальный банк",
+      // currentBankRate: null,
     };
   }
+
+  // updateData = (value) => {
+  // this.setState({ currentBankRate: value })
 
   submitForm = (e) => {
     e.preventDefault();

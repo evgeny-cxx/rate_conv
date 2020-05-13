@@ -79,34 +79,37 @@ export default class Banks extends Component {
     } else {
       container = (
         <table className="list-unstyled">
-          <tr>
-            <td>Валюта</td>
-            <td>Продажа</td>
-            <td>Покупка</td>
-          </tr>
-
-          {Object.keys(this.state.curensyRate).map((elem, index) => (
-            <tr key={index}>
-              <td className="media-body" key={index}>
-                <img
-                  src={this.state.curensyRate[elem][2]}
-                  className="mr-3"
-                  width="20"
-                  height="16"
-                  alt={[elem]}
-                />
-                {[elem]} :
-              </td>
-              <td>
-                <strong>{this.state.curensyRate[elem][0].toFixed(2)}</strong>{" "}
-                BYN.{" "}
-              </td>
-              <td>
-                <strong>{this.state.curensyRate[elem][1].toFixed(2)}</strong>{" "}
-                BYN.{" "}
-              </td>
+          <thead>
+            <tr>
+              <td>Валюта</td>
+              <td>Продажа</td>
+              <td>Покупка</td>
             </tr>
-          ))}
+          </thead>
+          <tbody>
+            {Object.keys(this.state.curensyRate).map((elem, index) => (
+              <tr key={index}>
+                <td className="media-body" key={index}>
+                  <img
+                    src={this.state.curensyRate[elem][2]}
+                    className="mr-3"
+                    width="20"
+                    height="16"
+                    alt={[elem]}
+                  />
+                  {[elem]} :
+                </td>
+                <td>
+                  <strong>{this.state.curensyRate[elem][0].toFixed(2)}</strong>{" "}
+                  BYN.{" "}
+                </td>
+                <td>
+                  <strong>{this.state.curensyRate[elem][1].toFixed(2)}</strong>{" "}
+                  BYN.{" "}
+                </td>
+              </tr>
+            ))}
+          </tbody>
         </table>
       );
     }
