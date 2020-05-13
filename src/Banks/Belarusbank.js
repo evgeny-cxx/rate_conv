@@ -34,11 +34,22 @@ export default class Banks extends Component {
         Object.keys(this.currensy).map((item, index) => {
           let sale = `data.${this.currensy[item]}CARD_out`;
           let purchase = `data.${this.currensy[item]}CARD_in`;
-          allRate[this.currensy[item]] = [
-            +eval(purchase),
-            +eval(sale),
-            `./flag/${this.currensy[item]}.png`,
-          ];
+
+          const noEval = (str) => {
+            return /data/g.test(str) && str.indexOf("CARD") === 8
+              ? true
+              : false;
+          };
+
+          console.log("func", noEval(purchase));
+
+          if (noEval(purchase)) {
+            allRate[this.currensy[item]] = [
+              +eval(purchase),
+              +eval(sale),
+              `./flag/${this.currensy[item]}.png`,
+            ];
+          }
           return null;
         });
         console.log(allRate);
@@ -75,34 +86,37 @@ export default class Banks extends Component {
     } else {
       container = (
         <table className="list-unstyled">
-          <tr>
-            <td>Валюта</td>
-            <td>Продажа</td>
-            <td>Покупка</td>
-          </tr>
-
-          {Object.keys(this.state.curensyRate).map((elem, index) => (
+          <thead>
             <tr>
-              <td className="media-body" key={index}>
-                <img
-                  src={this.state.curensyRate[elem][2]}
-                  className="mr-3"
-                  width="20"
-                  height="16"
-                  alt={[elem]}
-                />
-                {[elem]} :
-              </td>
-              <td>
-                <strong>{this.state.curensyRate[elem][0].toFixed(2)}</strong>{" "}
-                BYN
-              </td>
-              <td>
-                <strong>{this.state.curensyRate[elem][1].toFixed(2)}</strong>{" "}
-                BYN
-              </td>
+              <td>Валюта</td>
+              <td>Продажа</td>
+              <td>Покупка</td>
             </tr>
-          ))}
+          </thead>
+          <tbody>
+            {Object.keys(this.state.curensyRate).map((elem, index) => (
+              <tr key={index}>
+                <td className="media-body" key={index}>
+                  <img
+                    src={this.state.curensyRate[elem][2]}
+                    className="mr-3"
+                    width="20"
+                    height="16"
+                    alt={[elem]}
+                  />
+                  {[elem]} :
+                </td>
+                <td>
+                  <strong>{this.state.curensyRate[elem][0].toFixed(2)}</strong>{" "}
+                  BYN
+                </td>
+                <td>
+                  <strong>{this.state.curensyRate[elem][1].toFixed(2)}</strong>{" "}
+                  BYN
+                </td>
+              </tr>
+            ))}
+          </tbody>
         </table>
       );
     }
