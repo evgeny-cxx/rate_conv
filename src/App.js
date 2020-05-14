@@ -13,20 +13,13 @@ class App extends React.Component {
     super(props);
     this.state = {
       select: "Национальный банк",
-      // currentBankRate: null,
+      currentRate: {},
     };
   }
 
-  // updateData = (value) => {
-  // this.setState({ currentBankRate: value })
-
-  submitForm = (e) => {
-    e.preventDefault();
-  };
-
-  myInput = (e) => {
-    this.setState({ [e.target.name]: e.target.value });
-    console.log({ [e.target.name]: e.target.value });
+  updateData = (value) => {
+    this.setState({ currentRate: value });
+    console.log("app", this.state.currentRate);
   };
 
   render() {
@@ -34,7 +27,7 @@ class App extends React.Component {
     if (this.state.select === "Национальный банк") {
       component = (
         <div className="d-flex justify-content-center">
-          <NacBank />
+          <NacBank updateData={this.updateData} />
         </div>
       );
     }
@@ -63,17 +56,22 @@ class App extends React.Component {
     if (this.state.select === "Все банки") {
       component = (
         <div className="d-flex justify-content-between">
-          <NacBank />
-          <Belarusbank />
-          <Belagroprombank />
-          <Alfabank />
+          <div>
+            <NacBank />
+            <Belarusbank />
+          </div>
+          <div>
+            <Belagroprombank />
+            <Alfabank />
+          </div>
         </div>
       );
     }
 
     return (
-      <div className="App container">
+      <div className="container">
         <Header />
+
         <form onSubmit={this.submitForm} name="form">
           <select
             onChange={this.myInput}
@@ -87,8 +85,12 @@ class App extends React.Component {
             <option defaultValue="4">Все банки</option>
           </select>
         </form>
-        {component}
-        <Conv />
+        <div className="d-flex justify-content-around">
+          {component}
+          <div className="d-flex justify-content-center">
+            <Conv currentRate={this.state.currentRate} />
+          </div>
+        </div>
         <Footer />
       </div>
     );

@@ -10,6 +10,7 @@ export default class Main extends Component {
       curensyRate: {},
     };
     this.getRate();
+
     this.currensy = ["USD", "EUR", "RUB"];
   }
 
@@ -21,6 +22,7 @@ export default class Main extends Component {
       .then((data) => {
         console.log(data);
         this.setState({ isLoading: false });
+
         let date = new Date(data[0].Date);
         date = this.dateFormat(date);
         this.setState({ date: date });
@@ -43,6 +45,7 @@ export default class Main extends Component {
         }
         console.log(result);
         this.setState({ curensyRate: result });
+        this.props.updateData(this.state.curensyRate);
       });
   };
 
