@@ -4,120 +4,132 @@ export default class Conv extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      USD: null,
-      EUR: null,
-      RUB: null,
-      BYN: null,
-      curensyRate: {
-        USD: [2.42, 2.47, "./flag/USD.png"],
-        EUR: [2.615, 2.67, "./flag/EUR.png"],
-        RUB: [3.24, 3.35, "./flag/RUB.png"],
-      },
+      USD: 0,
+      EUR: 0,
+      RUB: 0,
+      BYN: 0,
     };
+
+    this.messageError = "";
   }
 
-  submitForm = (e) => {
-    e.preventDefault();
+  getRate = () => {
+    this.setState({ curensyRate: this.props.currentRate });
+    console.log(this.state.curensyRate);
   };
 
   myInput = (e) => {
-    this.setState({ [e.target.name]: +e.target.value });
-    console.log({ [e.target.name]: e.target.value });
-    const rate = this.state.curensyRate;
+    e.preventDefault();
+    const value = +e.target.value;
+    const name = e.target.name;
+    this.setState({ [name]: value });
+    console.log({ name: value });
+
+    if (Number.isNaN(value)) {
+      this.setState({
+        USD: 0,
+        EUR: 0,
+        RUB: 0,
+        BYN: 0,
+      });
+      this.messageError = "Incorrect input value!";
+    } else {
+      this.calculate(name, value);
+      this.messageError = "";
+    }
+  };
+
+  calculate = (name, value) => {
+    const rate = this.props.currentRate;
     const EURtoUSD = rate.EUR[1] / rate.USD[1];
     const RUB1 = rate.RUB[1] / 100;
     const RUBtoUSD = rate.USD[1] / RUB1;
     const RUBtoEUR = rate.EUR[1] / RUB1;
-    const value = +e.target.value;
-    const name = e.target.name;
 
-    // switch (name) {
-    //   case "BYN":
-    //     this.setState({
-    //       USD: value / rate.USD[1],
-    //       EUR: value / rate.EUR[1],
-    //       RUB: value / RUB1,
-    //     });
-    //     break;
-
-    //   case "USD":
-    //     this.setState({
-    //       BYN: value * rate.USD[1],
-    //       RUB: value * RUBtoUSD,
-    //       EUR: value / EURtoUSD,
-    //     });
-    //     break;
-
-    //   case "EUR":
-    //     this.setState({
-    //       BYN: value * rate.EUR[1],
-    //       RUB: value * RUBtoUSD,
-    //       USD: value * EURtoUSD,
-    //     });
-    //     break;
-
-    //   case "RUB":
-    //     this.setState({
-    //       BYN: value * RUB1,
-    //       USD: value / RUBtoUSD,
-    //       EUR: value / RUBtoEUR,
-    //     });
-    //     break;
-    // }
-
-    Object.keys(rate).map((item, index) => {
-      console.log(rate[item][1], index);
-      if (item === null) {
+    switch (name) {
+      case "BYN":
         this.setState({
-          BYN: value * RUB1,
-          USD: value / RUBtoUSD,
-          EUR: value / RUBtoEUR,
+          USD: (value / rate.USD[1]).toFixed(2),
+          EUR: (value / rate.EUR[1]).toFixed(2),
+          RUB: (value / RUB1).toFixed(2),
         });
-      }
-    });
+        break;
+
+      case "USD":
+        this.setState({
+          BYN: (value * rate.USD[1]).toFixed(2),
+          RUB: (value * RUBtoUSD).toFixed(2),
+          EUR: (value / EURtoUSD).toFixed(2),
+        });
+        break;
+
+      case "EUR":
+        this.setState({
+          BYN: (value * rate.EUR[1]).toFixed(2),
+          RUB: (value * RUBtoUSD).toFixed(2),
+          USD: (value * EURtoUSD).toFixed(2),
+        });
+        break;
+
+      case "RUB":
+        this.setState({
+          BYN: (value * RUB1).toFixed(2),
+          USD: (value / RUBtoUSD).toFixed(2),
+          EUR: (value / RUBtoEUR).toFixed(2),
+        });
+        break;
+    }
   };
 
   render() {
+    let rate = this.props.currentRate;
     return (
       <div>
-        <form onSubmit={this.submitForm} name="form">
-          <div className="form-group">
-            <label htmlFor="formGroupInput1">BYN</label>
-            <input
-              onChange={this.myInput}
-              type="number"
-              name="BYN"
-              id="formGroupInput1"
-            />
+        <form>
+          <div className="form-group row">
+            <label
+              className="col-sm-2 col-form-label col-form-label-lg"
+              htmlFor="BYN"
+            >
+              BYN
+            </label>
+            <div className="col-sm-10">
+              <input
+                className="form-control form-control-lg"
+                onChange={this.myInput}
+                type="text"
+                autoComplete="off"
+                name="BYN"
+                id="BYN"
+                value={this.state.BYN}
+              />
+            </div>
           </div>
-          <div className="form-group">
-            <label htmlFor="formGroupInput2">EUR</label>
-            <input
-              onChange={this.myInput}
-              type="number"
-              name="EUR"
-              id="formGroupInput2"
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="formGroupInput3">RUB</label>
-            <input
-              onChange={this.myInput}
-              type="number"
-              name="RUB"
-              id="formGroupInput3"
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="formGroupInput4">USD</label>
-            <input
-              onChange={this.myInput}
-              type="number"
-              name="USD"
-              id="formGroupInput3"
-            />
-          </div>
+          {Object.keys(rate).map((item) => (
+            <div className="form-group row" key={item}>
+              <label
+                className="col-sm-2 col-form-label col-form-label-lg"
+                htmlFor={item}
+              >
+                {item}
+              </label>
+              <div className="col-sm-10">
+                <input
+                  className="form-control form-control-lg"
+                  onChange={this.myInput}
+                  type="text"
+                  autoComplete="off"
+                  name={item}
+                  id={item}
+                  value={this.state[item]}
+                />
+              </div>
+            </div>
+          ))}
         </form>
+        <div>
+          <h3>{this.messageError}</h3>
+        </div>
       </div>
     );
   }
