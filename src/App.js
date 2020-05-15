@@ -22,6 +22,15 @@ class App extends React.Component {
     console.log("app", this.state.currentRate);
   };
 
+  submitForm = (e) => {
+    e.preventDefault();
+  };
+
+  myInput = (e) => {
+    this.setState({ [e.target.name]: e.target.value });
+    console.log({ [e.target.name]: e.target.value });
+  };
+
   render() {
     let component;
     if (this.state.select === "Национальный банк") {
@@ -35,21 +44,21 @@ class App extends React.Component {
       component = (
         <div className="d-flex justify-content-center">
           {" "}
-          <Belarusbank />
+          <Belarusbank updateData={this.updateData} />
         </div>
       );
     }
     if (this.state.select === "Белагропромбанк") {
       component = (
         <div className="d-flex justify-content-center">
-          <Belagroprombank />
+          <Belagroprombank updateData={this.updateData} />
         </div>
       );
     }
     if (this.state.select === "Альфабанк") {
       component = (
         <div className="d-flex justify-content-center">
-          <Alfabank />
+          <Alfabank updateData={this.updateData} />
         </div>
       );
     }
@@ -57,7 +66,7 @@ class App extends React.Component {
       component = (
         <div className="d-flex justify-content-between">
           <div>
-            <NacBank />
+            <NacBank updateData={this.updateData} />
             <Belarusbank />
           </div>
           <div>
