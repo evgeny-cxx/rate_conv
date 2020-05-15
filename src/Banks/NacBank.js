@@ -9,18 +9,20 @@ export default class Main extends Component {
       date: "",
       curensyRate: {},
     };
-    this.getRate();
+    // this.getRate();
 
     this.currensy = ["USD", "EUR", "RUB"];
   }
-
-  getRate = () => {
+  componentDidMount() {
+    this.setState({ isLoading: true });
+    this.readerRate();
+  }
+  readerRate = () => {
     fetch("https://www.nbrb.by/api/exrates/rates?periodicity=0")
       .then((response) => {
         return response.json();
       })
       .then((data) => {
-        console.log(data);
         this.setState({ isLoading: false });
 
         let date = new Date(data[0].Date);
@@ -46,6 +48,9 @@ export default class Main extends Component {
         console.log(result);
         this.setState({ curensyRate: result });
         this.props.updateData(this.state.curensyRate);
+      })
+      .catch((e) => {
+        this.setState({ isLoading: false, error: e });
       });
   };
 
@@ -62,7 +67,9 @@ export default class Main extends Component {
 
   render() {
     let container;
-    if (this.state.isLoading) {
+    const { curensyRate, isLoading, date, error } = this.state;
+
+    if (isLoading) {
       container = (
         <div>
           <div
@@ -75,26 +82,44 @@ export default class Main extends Component {
           Loading...
         </div>
       );
-    } else {
-      container = (
-        <ul className="list-unstyled">
-          {Object.keys(this.state.curensyRate).map((elem, index) => (
-            <li className="media-body" key={index}>
-              <img
-                src={this.state.curensyRate[elem][3]}
-                className="mr-3"
-                width="20"
-                height="16"
-                alt={[elem]}
-              />
-              {this.state.curensyRate[elem][0] + " " + [elem] + "   :    "}
-              <strong>{this.state.curensyRate[elem][1].toFixed(2)}</strong>
-              {"  "}BYN
-            </li>
-          ))}
-        </ul>
-      );
+      return container;
     }
+    if (error) {
+      container = <h3>Error: {error.message}</h3>;
+      return container;
+    }
+
+    container = (
+      <table className="list-unstyled">
+        <thead>
+          <tr>
+            <td>Валюта</td>
+            <td></td>
+            <td>Курс</td>
+          </tr>
+        </thead>
+        <tbody>
+          {Object.keys(curensyRate).map((elem) => (
+            <tr key={elem}>
+              <td className="media-body">
+                <img
+                  src={curensyRate[elem][3]}
+                  className="mr-3"
+                  width="20"
+                  height="16"
+                  alt={[elem]}
+                />
+                {curensyRate[elem][0]}
+              </td>
+              <td>{[elem]} :</td>
+              <td>
+                <strong>{curensyRate[elem][1].toFixed(2)}</strong> BYN
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    );
     return (
       <div className="Rate">
         <p>Курсы валют НБ РБ на </p>

@@ -5,15 +5,22 @@ export default class Banks extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isLoading: true,
+      isLoading: false,
       date: "",
       curensyRate: {},
+      data: {},
+      error: null,
     };
-    this.getRate();
+
     this.currensy = ["USD", "EUR", "RUB"];
+    this.getRate();
   }
 
-  getRate = () => {
+  componentDidMount() {
+    this.setState({ isLoading: true });
+    this.readerRate();
+  }
+  readerRate = () => {
     fetch(
       "https://cors-anywhere.herokuapp.com/" +
         "https://belarusbank.by/api/kurs_cards"
@@ -21,40 +28,58 @@ export default class Banks extends Component {
       .then((response) => {
         return response.json();
       })
-      .then((data) => {
-        data = data[0];
-        console.table("blrbank:  ", data);
-        this.setState({ isLoading: false });
+      .then(
+        (data) => {
+          data = data[0];
+          this.setState({
+            isLoading: false,
+          });
 
-        let date = new Date(data.kurs_date_time);
-        date = this.dateFormat(date);
-        this.setState({ date: date });
+          console.table("blrbank:  ", data);
 
-        let allRate = {};
-        Object.keys(this.currensy).map((item, index) => {
-          let sale = `data.${this.currensy[item]}CARD_out`;
-          let purchase = `data.${this.currensy[item]}CARD_in`;
+          let date = new Date(data.kurs_date_time);
+          date = this.dateFormat(date);
+          this.setState({ date: date });
 
-          const noEval = (str) => {
-            return /data/g.test(str) && str.indexOf("CARD") === 8
-              ? true
-              : false;
-          };
+          let allRate = {};
+          Object.keys(this.currensy).map((item) => {
+            let sale = `data.${this.currensy[item]}CARD_out`;
+            let purchase = `data.${this.currensy[item]}CARD_in`;
 
-          console.log("func", noEval(purchase));
+            const noEval = (str) => {
+              return /data/g.test(str) && str.indexOf("CARD") === 8
+                ? true
+                : false;
+            };
 
-          if (noEval(purchase)) {
-            allRate[this.currensy[item]] = [
-              +eval(purchase),
-              +eval(sale),
-              `./flag/${this.currensy[item]}.png`,
-            ];
-          }
-          return null;
-        });
-        console.log(allRate);
-        this.setState({ curensyRate: allRate });
-      });
+            console.log("func", noEval(purchase));
+
+            if (noEval(purchase)) {
+              allRate[this.currensy[item]] = [
+                +eval(purchase),
+                +eval(sale),
+                `./flag/${this.currensy[item]}.png`,
+              ];
+            }
+            return null;
+          });
+          console.log(allRate);
+          this.setState({ curensyRate: allRate });
+          this.props.updateData(this.state.curensyRate);
+        },
+        (error) => {
+          this.setState({
+            error: error.message,
+            isLoading: false,
+          });
+        }
+      );
+  };
+
+  getRate = () => {
+    this.readerRate();
+    let data = this.state.data;
+    console.log("reader", this.state.data);
   };
 
   dateFormat = (date) => {
@@ -70,7 +95,9 @@ export default class Banks extends Component {
 
   render() {
     let container;
-    if (this.state.isLoading) {
+    const { curensyRate, isLoading, date, error } = this.state;
+
+    if (isLoading) {
       container = (
         <div>
           <div
@@ -83,47 +110,51 @@ export default class Banks extends Component {
           Loading...
         </div>
       );
-    } else {
-      container = (
-        <table className="list-unstyled">
-          <thead>
-            <tr>
-              <td>Валюта</td>
-              <td>Продажа</td>
-              <td>Покупка</td>
-            </tr>
-          </thead>
-          <tbody>
-            {Object.keys(this.state.curensyRate).map((elem, index) => (
-              <tr key={index}>
-                <td className="media-body" key={index}>
-                  <img
-                    src={this.state.curensyRate[elem][2]}
-                    className="mr-3"
-                    width="20"
-                    height="16"
-                    alt={[elem]}
-                  />
-                  {[elem]} :
-                </td>
-                <td>
-                  <strong>{this.state.curensyRate[elem][0].toFixed(2)}</strong>{" "}
-                  BYN
-                </td>
-                <td>
-                  <strong>{this.state.curensyRate[elem][1].toFixed(2)}</strong>{" "}
-                  BYN
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      );
+      return container;
     }
+    if (error) {
+      container = <h3>Error: {error.message}</h3>;
+      return container;
+    }
+
+    container = (
+      <table className="list-unstyled">
+        <thead>
+          <tr>
+            <td>Валюта</td>
+            <td>Продажа</td>
+            <td>Покупка</td>
+          </tr>
+        </thead>
+        <tbody>
+          {Object.keys(curensyRate).map((elem) => (
+            <tr key={elem}>
+              <td className="media-body">
+                <img
+                  src={curensyRate[elem][2]}
+                  className="mr-3"
+                  width="20"
+                  height="16"
+                  alt={[elem]}
+                />
+                {[elem]} :
+              </td>
+              <td>
+                <strong>{curensyRate[elem][0].toFixed(2)}</strong> BYN
+              </td>
+              <td>
+                <strong>{curensyRate[elem][1].toFixed(2)}</strong> BYN
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    );
+
     return (
       <div className="Rate">
         <p>Курсы валют Беларусбанк на </p>
-        <p className="Date">{this.state.date}</p>
+        <p className="Date">{date}</p>
         <div>{container}</div>
       </div>
     );
