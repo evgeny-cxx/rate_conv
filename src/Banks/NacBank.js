@@ -1,16 +1,16 @@
 import React, { Component } from "react";
-import "./NacBank.css";
+import "./Banks.css";
 
 export default class Main extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isLoading: true,
+      isLoading: false,
       date: "",
       curensyRate: {},
+      data: {},
+      error: null,
     };
-    // this.getRate();
-
     this.currensy = ["USD", "EUR", "RUB"];
   }
   componentDidMount() {
@@ -121,9 +121,9 @@ export default class Main extends Component {
       </table>
     );
     return (
-      <div className="Rate">
-        <p>Курсы валют НБ РБ на </p>
-        <p className="Date">{this.state.date}</p>
+      <div className="mt-0 mr-5 mb-5 font">
+        Курсы валют НБ РБ на
+        <div>{this.state.date}</div>
         {container}
       </div>
     );

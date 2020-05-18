@@ -4,10 +4,10 @@ export default class Conv extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      BYN: 0,
       USD: 0,
       EUR: 0,
       RUB: 0,
-      BYN: 0,
     };
 
     this.messageError = "";
@@ -82,16 +82,16 @@ export default class Conv extends Component {
   };
 
   render() {
-    let rate = this.props.currentRate;
-    return (
-      <div>
-        <form>
-          <div className="form-group row">
+    let rate = this.state;
+    let content = (
+      <form>
+        {Object.keys(rate).map((item) => (
+          <div className="form-group row" key={item}>
             <label
               className="col-sm-2 col-form-label col-form-label-lg"
-              htmlFor="BYN"
+              htmlFor={item}
             >
-              BYN
+              {item}
             </label>
             <div className="col-sm-10">
               <input
@@ -99,34 +99,18 @@ export default class Conv extends Component {
                 onChange={this.myInput}
                 type="text"
                 autoComplete="off"
-                name="BYN"
-                id="BYN"
-                value={this.state.BYN}
+                name={item}
+                id={item}
+                value={this.state[item]}
               />
             </div>
           </div>
-          {Object.keys(rate).map((item) => (
-            <div className="form-group row" key={item}>
-              <label
-                className="col-sm-2 col-form-label col-form-label-lg"
-                htmlFor={item}
-              >
-                {item}
-              </label>
-              <div className="col-sm-10">
-                <input
-                  className="form-control form-control-lg"
-                  onChange={this.myInput}
-                  type="text"
-                  autoComplete="off"
-                  name={item}
-                  id={item}
-                  value={this.state[item]}
-                />
-              </div>
-            </div>
-          ))}
-        </form>
+        ))}
+      </form>
+    );
+    return (
+      <div>
+        <div>{content}</div>
         <div>
           <h3>{this.messageError}</h3>
         </div>

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import "./Belarusbank.css";
+import "./Banks.css";
 
 export default class Banks extends Component {
   constructor(props) {
@@ -13,7 +13,6 @@ export default class Banks extends Component {
     };
 
     this.currensy = ["USD", "EUR", "RUB"];
-    this.getRate();
   }
 
   componentDidMount() {
@@ -152,10 +151,10 @@ export default class Banks extends Component {
     );
 
     return (
-      <div className="Rate">
-        <p>Курсы валют Беларусбанк на </p>
-        <p className="Date">{date}</p>
-        <div>{container}</div>
+      <div className="mt-0 mr-5 mb-5 font">
+        Курсы валют Беларусбанк на
+        <div>{this.state.date}</div>
+        {container}
       </div>
     );
   }

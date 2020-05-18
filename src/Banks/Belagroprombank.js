@@ -1,19 +1,24 @@
 import React, { Component } from "react";
-import "./Belagroprombank.css";
+import "./Banks.css";
 
 export default class Banks extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isLoading: true,
+      isLoading: false,
       date: "",
       curensyRate: {},
+      data: {},
+      error: null,
     };
-    this.getRate();
     this.currensy = ["USD", "EUR", "RUB"];
   }
 
-  getRate = () => {
+  componentDidMount() {
+    this.setState({ isLoading: true });
+    this.readerRate();
+  }
+  readerRate = () => {
     fetch(
       "https://cors-anywhere.herokuapp.com/https://belapb.by/ExCardsDaily.php"
     )
@@ -47,6 +52,11 @@ export default class Banks extends Component {
 
         console.log("allRate", allRate);
         this.setState({ curensyRate: allRate });
+        this.props.updateData(this.state.curensyRate);
+      })
+      .catch((e) => {
+        console.log(e, e.message);
+        this.setState({ isLoading: false, error: e });
       });
   };
 
@@ -63,7 +73,9 @@ export default class Banks extends Component {
 
   render() {
     let container;
-    if (this.state.isLoading) {
+    const { curensyRate, isLoading, date, error } = this.state;
+
+    if (isLoading) {
       container = (
         <div>
           <div
@@ -76,48 +88,51 @@ export default class Banks extends Component {
           Loading...
         </div>
       );
-    } else {
-      container = (
-        <table className="list-unstyled">
-          <thead>
-            <tr>
-              <td>Валюта</td>
-              <td>Продажа</td>
-              <td>Покупка</td>
-            </tr>
-          </thead>
-          <tbody>
-            {Object.keys(this.state.curensyRate).map((elem, index) => (
-              <tr key={index}>
-                <td className="media-body" key={index}>
-                  <img
-                    src={this.state.curensyRate[elem][2]}
-                    className="mr-3"
-                    width="20"
-                    height="16"
-                    alt={[elem]}
-                  />
-                  {[elem]} :
-                </td>
-                <td>
-                  <strong>{this.state.curensyRate[elem][0].toFixed(2)}</strong>{" "}
-                  BYN.{" "}
-                </td>
-                <td>
-                  <strong>{this.state.curensyRate[elem][1].toFixed(2)}</strong>{" "}
-                  BYN.{" "}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      );
+      return container;
     }
+    if (error) {
+      container = <h3>Error: {error.message}</h3>;
+      return container;
+    }
+
+    container = (
+      <table className="list-unstyled">
+        <thead>
+          <tr>
+            <td>Валюта</td>
+            <td>Продажа</td>
+            <td>Покупка</td>
+          </tr>
+        </thead>
+        <tbody>
+          {Object.keys(curensyRate).map((elem) => (
+            <tr key={elem}>
+              <td className="media-body">
+                <img
+                  src={curensyRate[elem][2]}
+                  className="mr-3"
+                  width="20"
+                  height="16"
+                  alt={[elem]}
+                />
+                {[elem]} :
+              </td>
+              <td>
+                <strong>{curensyRate[elem][0].toFixed(2)}</strong> BYN
+              </td>
+              <td>
+                <strong>{curensyRate[elem][1].toFixed(2)}</strong> BYN
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    );
     return (
-      <div className="Rate">
-        <p>Курсы валют Белагропромбанк на </p>
-        <p className="Date">{this.state.date}</p>
-        <div>{container}</div>
+      <div className="mt-0 mr-5 mb-5 font">
+        Курсы валют Агропромбанк на
+        <div>{this.state.date}</div>
+        {container}
       </div>
     );
   }

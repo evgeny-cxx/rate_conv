@@ -21,6 +21,9 @@ class App extends React.Component {
     this.setState({ currentRate: value });
     console.log("app", this.state.currentRate);
   };
+  noData = () => {
+    return null;
+  };
 
   submitForm = (e) => {
     e.preventDefault();
@@ -32,10 +35,25 @@ class App extends React.Component {
   };
 
   render() {
-    let component;
+    let selectForm = (
+      <form onSubmit={this.submitForm} name="form">
+        <select
+          onChange={this.myInput}
+          name="select"
+          className="custom-select custom-select-lg mb-3"
+        >
+          <option defaultValue="0">Национальный банк</option>
+          <option defaultValue="1">Беларусбанк</option>
+          <option defaultValue="2">Белагропромбанк</option>
+          <option defaultValue="3">Альфабанк</option>
+          <option defaultValue="4">Все банки</option>
+        </select>
+      </form>
+    );
+    let component, allbanks;
     if (this.state.select === "Национальный банк") {
       component = (
-        <div className="d-flex justify-content-center">
+        <div>
           <NacBank updateData={this.updateData} />
         </div>
       );
@@ -43,7 +61,6 @@ class App extends React.Component {
     if (this.state.select === "Беларусбанк") {
       component = (
         <div className="d-flex justify-content-center">
-          {" "}
           <Belarusbank updateData={this.updateData} />
         </div>
       );
@@ -64,14 +81,16 @@ class App extends React.Component {
     }
     if (this.state.select === "Все банки") {
       component = (
-        <div className="d-flex justify-content-between">
-          <div>
+        <div className="mb-0 d-flex justify-content-between">
+          <div className="">
             <NacBank updateData={this.updateData} />
-            <Belarusbank />
+            <Belarusbank updateData={this.noData} />
           </div>
-          <div>
-            <Belagroprombank />
-            <Alfabank />
+
+          <div className="">
+            <Belagroprombank updateData={this.noData} />
+
+            <Alfabank updateData={this.noData} />
           </div>
         </div>
       );
@@ -80,25 +99,15 @@ class App extends React.Component {
     return (
       <div className="container">
         <Header />
-
-        <form onSubmit={this.submitForm} name="form">
-          <select
-            onChange={this.myInput}
-            name="select"
-            className="custom-select custom-select-lg mb-3"
-          >
-            <option defaultValue="0">Национальный банк</option>
-            <option defaultValue="1">Беларусбанк</option>
-            <option defaultValue="2">Белагропромбанк</option>
-            <option defaultValue="3">Альфабанк</option>
-            <option defaultValue="4">Все банки</option>
-          </select>
-        </form>
-        <div className="d-flex justify-content-around">
-          {component}
-          <div className="d-flex justify-content-center">
-            <Conv currentRate={this.state.currentRate} />
+        <div className="d-flex justify-content-between">
+          <div className="flex-column col-5">
+            <div className=" mt-5">{selectForm}</div>
+            <p className="convert mb-0 ">Конвертор валют</p>
+            <div className="mt-0 mb-5">
+              <Conv currentRate={this.state.currentRate} />
+            </div>
           </div>
+          <div className="mt-5 align-self-center ">{component}</div>
         </div>
         <Footer />
       </div>
