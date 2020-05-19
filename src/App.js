@@ -109,14 +109,16 @@ class App extends React.Component {
           <Header />
         </header>
         <div className="container-fluid row-cols-2 d-flex">
-          <div className="flex-column col-4 align-self-center">
+          <div className="flex-column col-6 col-lg-4 align-self-center">
             <div className=" mt-5">{selectForm}</div>
             <h5 className="convert mb-3 ">Конвертор валют</h5>
             <div className="mt-0 mb-5">
               <Conv currentRate={this.state.currentRate} />
             </div>
           </div>
-          <div className="col-8 mt-5 align-self-center ">{component}</div>
+          <div className="col-12 col-sm-6 col-lg-8 mt-5 align-self-center ">
+            {component}
+          </div>
         </div>
         <footer>
           <Footer />
