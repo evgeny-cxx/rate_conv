@@ -99,7 +99,7 @@ export default class Banks extends Component {
     }
 
     container = (
-      <table className="list-unstyled">
+      <table className="table table-sm">
         <thead>
           <tr>
             <td>Валюта</td>
@@ -132,9 +132,12 @@ export default class Banks extends Component {
       </table>
     );
     return (
-      <div className="mt-0 mr-5 mb-5 font">
-        Курсы валют Альфабанк на
-        <div>{this.state.date}</div>
+      <div className="mt-0 font">
+        <h4 className="text-center">
+          <p className="mb-0">Курсы валют</p>
+          <p>Альфабанк на</p>
+          <div>{this.state.date}</div>
+        </h4>
         {container}
       </div>
     );
