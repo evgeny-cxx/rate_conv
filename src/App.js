@@ -53,7 +53,7 @@ class App extends React.Component {
     let component, allbanks;
     if (this.state.select === "Национальный банк") {
       component = (
-        <div>
+        <div className="d-flex justify-content-center">
           <NacBank updateData={this.updateData} />
         </div>
       );
@@ -81,35 +81,46 @@ class App extends React.Component {
     }
     if (this.state.select === "Все банки") {
       component = (
-        <div className="mb-0 d-flex justify-content-between">
-          <div className="">
-            <NacBank updateData={this.updateData} />
-            <Belarusbank updateData={this.noData} />
+        <div className="mx-auto row row-cols-2">
+          <div className="row">
+            <div className="col">
+              <NacBank updateData={this.updateData} />
+            </div>
+            <div className="col">
+              <Belarusbank updateData={this.noData} />
+            </div>
           </div>
 
-          <div className="">
-            <Belagroprombank updateData={this.noData} />
-
-            <Alfabank updateData={this.noData} />
+          <div className="row">
+            <div className="col">
+              <Belagroprombank updateData={this.noData} />
+            </div>
+            <div className="col">
+              <Alfabank updateData={this.noData} />
+            </div>
           </div>
         </div>
       );
     }
 
     return (
-      <div className="container">
-        <Header />
-        <div className="d-flex justify-content-between">
-          <div className="flex-column col-5">
+      <div className="container-sm container">
+        <header>
+          <Header />
+        </header>
+        <div className="container-fluid row-cols-2 d-flex">
+          <div className="flex-column col-4 align-self-center">
             <div className=" mt-5">{selectForm}</div>
-            <p className="convert mb-0 ">Конвертор валют</p>
+            <h5 className="convert mb-3 ">Конвертор валют</h5>
             <div className="mt-0 mb-5">
               <Conv currentRate={this.state.currentRate} />
             </div>
           </div>
-          <div className="mt-5 align-self-center ">{component}</div>
+          <div className="col-8 mt-5 align-self-center ">{component}</div>
         </div>
-        <Footer />
+        <footer>
+          <Footer />
+        </footer>
       </div>
     );
   }

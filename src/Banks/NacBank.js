@@ -90,7 +90,7 @@ export default class Main extends Component {
     }
 
     container = (
-      <table className="list-unstyled">
+      <table className="table table-sm">
         <thead>
           <tr>
             <td>Валюта</td>
@@ -121,9 +121,12 @@ export default class Main extends Component {
       </table>
     );
     return (
-      <div className="mt-0 mr-5 mb-5 font">
-        Курсы валют НБ РБ на
-        <div>{this.state.date}</div>
+      <div className="mt-0 font">
+        <h4 className="text-center">
+          <p className="mb-0">Курсы валют</p>
+          <p>Национального Банка РБ на</p>
+          <div>{this.state.date}</div>
+        </h4>
         {container}
       </div>
     );
