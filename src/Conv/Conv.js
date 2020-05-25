@@ -93,7 +93,7 @@ export default class Conv extends Component {
             >
               {item}
             </label>
-            <div className="col-sm-10">
+            <div className="col col-lg-10">
               <input
                 className="form-control form-control-lg"
                 onChange={this.myInput}
@@ -110,6 +110,7 @@ export default class Conv extends Component {
     );
     return (
       <div>
+        <h5 className="convert-lebel">Конвертор валют</h5>
         <div>{content}</div>
         <div>
           <h3>{this.messageError}</h3>
