@@ -55,9 +55,10 @@ export default class Banks extends Component {
 
             if (noEval(purchase)) {
               allRate[this.currensy[item]] = [
-                +eval(purchase),
+                // eslint-disable-next-line
+                +eval(purchase), // eslint-disable-next-line
                 +eval(sale),
-                `./flag/${this.currensy[item]}.png`,
+                `../flag/${this.currensy[item]}.png`,
               ];
             }
             return null;
@@ -73,12 +74,6 @@ export default class Banks extends Component {
           });
         }
       );
-  };
-
-  getRate = () => {
-    this.readerRate();
-    let data = this.state.data;
-    console.log("reader", this.state.data);
   };
 
   dateFormat = (date) => {
@@ -155,7 +150,7 @@ export default class Banks extends Component {
         <h4 className="text-center">
           <p className="mb-0">Курсы валют</p>
           <p>Беларусбанк на</p>
-          <div>{this.state.date}</div>
+          <div>{date}</div>
         </h4>
         {container}
       </div>

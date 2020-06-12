@@ -43,7 +43,7 @@ export default class Banks extends Component {
             allRate[data[item].sellIso] = [
               data[index].buyRate,
               data[index].sellRate,
-              `./flag/${data[index].sellIso}.png`,
+              `../flag/${data[index].sellIso}.png`,
             ];
           }
           return null;
@@ -136,7 +136,7 @@ export default class Banks extends Component {
         <h4 className="text-center">
           <p className="mb-0">Курсы валют</p>
           <p>Альфабанк на</p>
-          <div>{this.state.date}</div>
+          <div>{date}</div>
         </h4>
         {container}
       </div>

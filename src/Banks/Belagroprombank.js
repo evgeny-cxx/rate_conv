@@ -20,7 +20,7 @@ export default class Banks extends Component {
   }
   readerRate = () => {
     fetch(
-      "https://cors-anywhere.herokuapp.com/https://belapb.by/ExCardsDaily.php"
+      `https://cors-anywhere.herokuapp.com/https://belapb.by/ExCardsDaily.php?ondate=${this.state.date}`
     )
       .then((response) => {
         return response.text();
@@ -38,6 +38,11 @@ export default class Banks extends Component {
         date = this.dateFormat(date);
         console.log("Date  ", date);
         this.setState({ date: date });
+        // let today = new Date();
+        // console.log("today", today.getDate());
+        // today.setDate(today.getDate() - 1);
+        // let yesterday = today.getDate();
+        // console.log("yesterday", yesterday);
 
         let allRate = {};
         Object.keys(this.currensy).map((item, index) => {
@@ -45,7 +50,7 @@ export default class Banks extends Component {
           allRate[this.currensy[item]] = [
             +arr[4],
             +arr[5],
-            `./flag/${this.currensy[item]}.png`,
+            `../flag/${this.currensy[item]}.png`,
           ];
           return null;
         });
@@ -91,8 +96,14 @@ export default class Banks extends Component {
       return container;
     }
     if (error) {
-      container = <h3>Error: {error.message}</h3>;
-      return container;
+      if (error.message === "Cannot read property 'textContent' of undefined") {
+        console.log("error!!");
+        container = <h3>Курсы валют отсутсвуют. Попробуйте позже.</h3>;
+        return container;
+      } else {
+        container = <h3>Error: {error.message}</h3>;
+        return container;
+      }
     }
 
     container = (
@@ -132,8 +143,8 @@ export default class Banks extends Component {
       <div className="mt-0 font">
         <h4 className="text-center">
           <p className="mb-0">Курсы валют</p>
-          <p>Беларусбанк на</p>
-          <div>{this.state.date}</div>
+          <p>Белагропромбанк на</p>
+          <div>{date}</div>
         </h4>
         {container}
       </div>
