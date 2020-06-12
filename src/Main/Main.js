@@ -17,6 +17,7 @@ class Main extends React.Component {
 
   updateData = (value) => {
     this.setState({ currentRate: value });
+    this.props.updateDataApp(this.state.curentRate);
     console.log("main", this.state.currentRate);
   };
   noData = () => {

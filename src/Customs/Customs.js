@@ -35,7 +35,7 @@ class Customs extends React.Component {
             />
           </div>
         </form>
-        <div>HGHJGHGHGHGHGHGHGHGHGHGHG</div>
+        {/* <div>{this.props.currentRate}</div> */}
       </div>
     );
   }
