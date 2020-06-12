@@ -35,7 +35,7 @@ export default class Main extends Component {
             data[index].Cur_Scale,
             data[index].Cur_OfficialRate,
             data[index].Cur_Name,
-            `./flag/${data[index].Cur_Abbreviation}.png`,
+            `../flag/${data[index].Cur_Abbreviation}.png`,
           ];
           return null;
         });
@@ -125,7 +125,7 @@ export default class Main extends Component {
         <h4 className="text-center">
           <p className="mb-0">Курсы валют</p>
           <p>Национального Банка РБ на</p>
-          <div>{this.state.date}</div>
+          <div>{date}</div>
         </h4>
         {container}
       </div>

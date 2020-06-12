@@ -6,7 +6,7 @@ export default class Header extends Component {
   render() {
     return (
       <header className="App-header">
-        <div className="banner">Header banner</div>
+        <h1>Конвертер валют</h1>
         <Nav />
       </header>
     );

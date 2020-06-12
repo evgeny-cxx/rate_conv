@@ -1,4 +1,8 @@
 .Footer {
+  /* position: absolute; */
+  /* left: auto;
+  bottom: 0px; */
+  /* width: 58%; */
   background-color: #282c34;
   min-height: 5vh;
   display: flex;
