@@ -13,10 +13,10 @@ export default class Conv extends Component {
     this.messageError = "";
   }
 
-  getRate = () => {
-    this.setState({ curensyRate: this.props.currentRate });
-    console.log(this.state.curensyRate);
-  };
+  // getRate = () => {
+  //   this.setState({ curensyRate: this.props.currentRate });
+  //   console.log(this.state.curensyRate);
+  // };
 
   myInput = (e) => {
     e.preventDefault();
