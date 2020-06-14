@@ -6,15 +6,16 @@ class Customs extends React.Component {
     super(props);
     this.state = {
       priceUSD: 0,
-      priceBY: 0,
+      priceBYN: 0,
       priceEUR: 0,
       percentUSD: 0,
-      percentBY: 0,
+      percentBYN: 0,
       percentEUR: 0,
       fullPriceUSD: 0,
-      fullPriceBY: 0,
+      fullPriceBYN: 0,
       fullPriceEUR: 0,
     };
+    this.messageError = "";
   }
 
   submitForm = (e) => {
@@ -22,43 +23,117 @@ class Customs extends React.Component {
   };
 
   myInput = (e) => {
-    this.setState({ [e.target.name]: e.target.value });
-    console.log({ [e.target.name]: e.target.value });
+    const value = +e.target.value;
+    const name = e.target.name;
+    this.setState({ [name]: value });
+    console.log({ name: value });
+
+    if (Number.isNaN(value)) {
+      this.setState({
+        priceUSD: 0,
+      });
+      this.messageError = "Incorrect input value!";
+    } else {
+      this.customs(value);
+      this.messageError = "";
+    }
   };
 
-  customs = () => {
-    const { rate } = this.props.currentRate;
-    console.log("rate", rate);
+  customs = (value) => {
+    this.setState((state) => {
+      const rate = this.props.currentRate;
+      // let price = this.state;
+      let priceBYN = 0,
+        priceEUR = 0,
+        percentUSD = 0,
+        percentBYN = 0,
+        percentEUR = 0,
+        fullPriceUSD = 0,
+        fullPriceBYN = 0,
+        fullPriceEUR = 0;
+      const EURtoUSD = rate.EUR[1] / rate.USD[1];
+      priceEUR = +(value / EURtoUSD).toFixed(2);
+      priceBYN = +(value * rate.USD[1]).toFixed(2);
+
+      if (priceEUR > 22) {
+        let excess = (priceEUR - 22) * 0.15 + 5;
+
+        percentUSD = +(excess * EURtoUSD).toFixed(2);
+        percentEUR = +excess.toFixed(2);
+        percentBYN = +(excess * rate.EUR[1]).toFixed(2);
+        fullPriceUSD = (percentUSD + value).toFixed(2);
+        fullPriceEUR = (percentEUR + priceEUR).toFixed(2);
+        fullPriceBYN = (percentBYN + priceBYN).toFixed(2);
+      } else {
+        fullPriceUSD = value;
+        fullPriceEUR = priceEUR;
+        fullPriceBYN = priceBYN;
+      }
+      // console.log("cust", price);
+      return {
+        priceBYN,
+        priceEUR,
+        percentUSD,
+        percentBYN,
+        percentEUR,
+        fullPriceUSD,
+        fullPriceBYN,
+        fullPriceEUR,
+      };
+    });
   };
+
   render() {
-    let rate = this.state;
+    let price = this.state;
+
     let content = (
-      <form>
-        {Object.keys(rate).map((item) => (
-          <div className="form-group row" key={item}>
-            <label
-              className="col-sm-2 col-form-label col-form-label-lg"
-              htmlFor={item}
-            >
-              {item}
-            </label>
-            <div className="col col-lg-10">
-              <input
-                className="form-control form-control-lg"
-                onChange={this.myInput}
-                type="text"
-                autoComplete="off"
-                name={item}
-                id={item}
-                value={this.state[item]}
-              />
-            </div>
-          </div>
-        ))}
-      </form>
+      <table className="table table-sm">
+        <thead>
+          <tr>
+            <td> </td>
+            <td>USD</td>
+            <td>EUR</td>
+            <td>BYN</td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">Цена </th>
+            <td>
+              {
+                <input
+                  className="input"
+                  onChange={this.myInput}
+                  type="number"
+                  step="any"
+                  autoComplete="off"
+                  name="priceUSD"
+                  id="priceUSD"
+                  value={price.priceUSD}
+                />
+              }
+            </td>
+            <td>{price.priceEUR}</td>
+            <td>{price.priceBYN}</td>
+          </tr>
+          <tr>
+            <th scope="row">% + 5 EUR </th>
+            <td>{price.percentUSD}</td>
+            <td>{price.percentEUR}</td>
+            <td>{price.percentBYN}</td>
+          </tr>
+          <tr>
+            <th scope="row">Итого:</th>
+            <td>{price.fullPriceUSD}</td>
+            <td>{price.fullPriceEUR}</td>
+            <td>{price.fullPriceBYN}</td>
+          </tr>
+        </tbody>
+      </table>
     );
     return (
-      <div>
+      <div className="mt-0 font">
+        {/* <div>{input}</div> */}
         <div>{content}</div>
         <div>
           <h3>{this.messageError}</h3>
