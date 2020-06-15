@@ -98,7 +98,7 @@ class App extends React.Component {
           <div className="row d-flex justify-content-around">
             <div className="d-flex align-self-center ">{component}</div>
             <div className="align-self-center">
-              <div className=" mt-5">{selectForm}</div>
+              <div className="mt-5">{selectForm}</div>
 
               <Switch>
                 <Route

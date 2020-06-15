@@ -20,7 +20,7 @@ export default class Nav extends Component {
 
         <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
           <div className="navbar-nav">
-            <Link to="/" className="nav-item nav-link active">
+            <Link to="/" className="nav-item nav-link :active">
               Главная
             </Link>
             <Link to="/Customs" className="nav-item nav-link">
