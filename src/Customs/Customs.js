@@ -27,22 +27,12 @@ class Customs extends React.Component {
     const name = e.target.name;
     this.setState({ [name]: value });
     console.log({ name: value });
-
-    if (Number.isNaN(value)) {
-      this.setState({
-        priceUSD: 0,
-      });
-      this.messageError = "Incorrect input value!";
-    } else {
-      this.customs(value);
-      this.messageError = "";
-    }
+    this.customs(value);
   };
 
   customs = (value) => {
     this.setState((state) => {
       const rate = this.props.currentRate;
-      // let price = this.state;
       let priceBYN = 0,
         priceEUR = 0,
         percentUSD = 0,
@@ -69,7 +59,6 @@ class Customs extends React.Component {
         fullPriceEUR = priceEUR;
         fullPriceBYN = priceBYN;
       }
-      // console.log("cust", price);
       return {
         priceBYN,
         priceEUR,
@@ -85,9 +74,27 @@ class Customs extends React.Component {
 
   render() {
     let price = this.state;
-
+    let input = (
+      <form>
+        <div className="form" key="priceUSD">
+          <label className="col-form-label" htmlFor="priceUSD"></label>
+          <div className="slider-wrapper">
+            <input
+              className="form-control-range"
+              onChange={this.myInput}
+              type="range"
+              min="1"
+              max="300"
+              name="priceUSD"
+              step="0.01"
+              value={price.priceUSD}
+            />
+          </div>
+        </div>
+      </form>
+    );
     let content = (
-      <table className="table table-sm">
+      <table className="table customs-text">
         <thead>
           <tr>
             <td> </td>
@@ -97,33 +104,20 @@ class Customs extends React.Component {
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <th scope="row">Цена </th>
-            <td>
-              {
-                <input
-                  className="input"
-                  onChange={this.myInput}
-                  type="number"
-                  step="any"
-                  autoComplete="off"
-                  name="priceUSD"
-                  id="priceUSD"
-                  value={price.priceUSD}
-                />
-              }
-            </td>
+          <tr className="table-success">
+            <th scope="row">Цена: </th>
+            <td>{price.priceUSD}</td>
             <td>{price.priceEUR}</td>
             <td>{price.priceBYN}</td>
           </tr>
           <tr>
-            <th scope="row">% + 5 EUR </th>
+            <th scope="row">%+5 EUR: </th>
             <td>{price.percentUSD}</td>
             <td>{price.percentEUR}</td>
             <td>{price.percentBYN}</td>
           </tr>
-          <tr>
-            <th scope="row">Итого:</th>
+          <tr className="table-primary">
+            <th scope="row">Итого: </th>
             <td>{price.fullPriceUSD}</td>
             <td>{price.fullPriceEUR}</td>
             <td>{price.fullPriceBYN}</td>
@@ -132,13 +126,41 @@ class Customs extends React.Component {
       </table>
     );
     return (
-      <div className="mt-0 font">
-        {/* <div>{input}</div> */}
-        <div>{content}</div>
-        <div>
-          <h3>{this.messageError}</h3>
+      <>
+        <div className="row col-sm-6">
+          <div>{input}</div>
+          <div>
+            <div className="info" style={{ width: "30rem" }}>
+              <div>
+                <strong>
+                  Выбрав банк и цену посылки с помощью ползунка справа , можно
+                  увидеть расчет таможенного платежа при превышении лимита в 22
+                  евро и итоговую стоимость посылки по курсу данного банка.
+                </strong>
+                {content}
+              </div>
+              <div>
+                * Данные из калькулятора носят справочный характер. Более точную
+                информацию вы можете получить в таможенной службе РБ.
+              </div>
+              <p>
+                Расчет происходит на основании{" "}
+                <a href="http://www.customs.gov.by/uploads/gtk/files/document/fizicheskim-litsam/MPO.pdf">
+                  методички расчета
+                </a>{" "}
+                на официальном сайте белорусской таможни.
+              </p>
+              <p>
+                С 1 января 2020 года изменились правила получения посылок в
+                Евразийском экономическом союзе. Соответственно, нововведения
+                начали действовать и в Беларуси. Стоимость пошлины - 15% от
+                превышения (минимум 2 евро за килограмм) начала действовать с
+                января.
+              </p>
+            </div>
+          </div>
         </div>
-      </div>
+      </>
     );
   }
 }
