@@ -6,7 +6,7 @@ export default class Header extends Component {
   render() {
     return (
       <header className="App-header">
-        <h1>Конвертер валют</h1>
+        <h1>Курсы валют</h1>
         <Nav />
       </header>
     );
