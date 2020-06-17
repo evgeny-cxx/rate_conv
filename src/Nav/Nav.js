@@ -4,8 +4,13 @@ import { NavLink } from "react-router-dom";
 
 export default class Nav extends Component {
   render() {
+    let title = this.props.title;
+    let nav = this.props.nav;
     return (
-      <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+      <nav className="conteiner navbar navbar-expand-lg navbar-dark bg-primary">
+        <a className="navbar-brand" href="/">
+          {title}
+        </a>
         <button
           className="navbar-toggler"
           type="button"
@@ -19,23 +24,18 @@ export default class Nav extends Component {
         </button>
 
         <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
-          <div className="navbar-nav">
-            <NavLink
-              exact
-              activeClassName="active"
-              to="/"
-              className="nav-item nav-link "
-            >
-              Главная
-            </NavLink>
-            <NavLink
-              exact
-              activeClassName="active"
-              to="/Customs"
-              className="nav-item nav-link "
-            >
-              Растаможка
-            </NavLink>
+          <div className="nav nav-pills flex-column flex-sm-row">
+            {Object.keys(nav).map((elem) => (
+              <NavLink
+                exact
+                activeClassName=" active"
+                to={nav[elem]}
+                className="nav-item nav-link navbar-text"
+                key={elem}
+              >
+                {elem}
+              </NavLink>
+            ))}
           </div>
         </div>
       </nav>

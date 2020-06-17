@@ -10,6 +10,14 @@ import Alfabank from "./Banks/Alfabank";
 import Conv from "./Conv/Conv";
 import { Route, Switch, Redirect } from "react-router-dom";
 
+let title = "Курсы валют";
+let contacts = [
+  "Copyright by cxx_BY",
+  "+375298174777",
+  "evgeny.s.developer@gmail.com",
+];
+let nav = { Главная: "/", Растаможка: "/customs" };
+
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -92,7 +100,7 @@ class App extends React.Component {
     return (
       <div className="container">
         <header>
-          <Header />
+          <Header title={title} nav={nav} />
         </header>
         <main className="page">
           <div className="row d-flex justify-content-around">
@@ -107,17 +115,17 @@ class App extends React.Component {
                   render={(props) => <Conv currentRate={currentRate} />}
                 />
                 <Route
-                  path="/Customs"
+                  path="/customs"
                   render={(props) => <Customs currentRate={currentRate} />}
                 />
               </Switch>
 
-              {/* <Redirect to="/" /> */}
+              <Redirect to="/" />
             </div>
           </div>
         </main>
         <footer className="container fixed-bottom">
-          <Footer />
+          <Footer title={title} contacts={contacts} />
         </footer>
       </div>
     );
