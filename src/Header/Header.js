@@ -4,10 +4,11 @@ import Nav from "../Nav/Nav";
 
 export default class Header extends Component {
   render() {
+    let title = this.props.title;
+    let nav = this.props.nav;
     return (
       <header className="App-header">
-        <h1>Курсы валют</h1>
-        <Nav />
+        <Nav title={title} nav={nav} />
       </header>
     );
   }
