@@ -8,7 +8,10 @@ export default class Header extends Component {
     let nav = this.props.nav;
     return (
       <header className="App-header">
-        <Nav title={title} nav={nav} />
+        <a className="brand" href="/">
+          {title}
+        </a>
+        <Nav nav={nav} />
       </header>
     );
   }

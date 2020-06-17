@@ -4,13 +4,9 @@ import { NavLink } from "react-router-dom";
 
 export default class Nav extends Component {
   render() {
-    let title = this.props.title;
     let nav = this.props.nav;
     return (
-      <nav className="conteiner navbar navbar-expand-lg navbar-dark bg-primary">
-        <a className="navbar-brand" href="/">
-          {title}
-        </a>
+      <nav className="navbar navbar-expand-sm navbar-dark bg-primary">
         <button
           className="navbar-toggler"
           type="button"
@@ -24,7 +20,7 @@ export default class Nav extends Component {
         </button>
 
         <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
-          <div className="nav nav-pills flex-column flex-sm-row">
+          <div className="navbar-nav">
             {Object.keys(nav).map((elem) => (
               <NavLink
                 exact
