@@ -1,0 +1,47 @@
+/* .input {
+  margin-right: -50px;
+  border: none;
+  outline: none;
+  width: 50%;
+} */
+
+.font {
+  font-size: 20px;
+}
+
+.table td,
+.table th {
+  padding: 0;
+}
+
+.customs-text {
+  text-align: right;
+}
+.info {
+  text-align: justify;
+}
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  /* display: none; <- Crashes Chrome on hover */
+  -webkit-appearance: none;
+  margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+}
+
+.slider-wrapper {
+  display: inline-block;
+  width: 60px;
+
+  padding: 0;
+}
+
+.slider-wrapper input {
+  width: 500px;
+  height: 60px;
+  margin: 0;
+  transform-origin: 550px;
+  transform: rotate(-90deg);
+}
+
+.form {
+  margin-bottom: -3rem;
+}
