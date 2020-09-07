@@ -146,7 +146,7 @@ class Customs extends React.Component {
               <p>
                 Расчет происходит на основании{" "}
                 <a href="http://www.customs.gov.by/uploads/gtk/files/document/fizicheskim-litsam/MPO.pdf">
-                  методички расчета
+                  методички
                 </a>{" "}
                 на официальном сайте белорусской таможни.
               </p>
