@@ -6,7 +6,7 @@ export default class Nav extends Component {
   render() {
     let nav = this.props.nav;
     return (
-      <nav className="navbar navbar-expand-sm navbar-dark bg">
+      <nav className="navbar navbar-expand-sm navbar-dark bg-primary">
         <button
           className="navbar-toggler"
           type="button"
