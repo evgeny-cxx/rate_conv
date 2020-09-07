@@ -1,5 +1,7 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+open this site https://evgeny-cxx.github.io/rate_conv/ .
+
 ## Available Scripts
 
 In the project directory, you can run:
